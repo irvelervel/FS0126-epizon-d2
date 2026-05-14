@@ -41,12 +41,15 @@ const Cart = () => {
       </Col>
       <Row>
         <Col sm={12} className="fw-bold mb-3 ms-4">
-          TOTALE:{' '}
-          {cart.reduce(
-            (acc, currentValue) => acc + parseFloat(currentValue.price),
-            0,
-          )}
-          $
+          <p>
+            TOTALE:{' '}
+            {cart.reduce(
+              (acc, currentValue) => acc + parseFloat(currentValue.price),
+              0,
+            )}
+            $
+          </p>
+          <p>Al momento nel nostro negozio risultano disponibili X libri.</p>
         </Col>
       </Row>
     </Row>
