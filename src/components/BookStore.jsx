@@ -2,30 +2,22 @@ import { useState, useEffect } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import BookList from './BookList'
 import BookDetail from './BookDetail'
+import { useDispatch, useSelector } from 'react-redux'
+import { getBooksAction } from '../redux/actions'
 
 const BookStore = () => {
-  const [books, setBooks] = useState([])
+  // const [books, setBooks] = useState([]) // i libri non vengono più salvati nello stato locale
   const [bookSelected, setBookSelected] = useState(null)
+  // prelevo i libri che ora vivono in Redux Store
+  const books = useSelector((reduxStore) => {
+    return reduxStore.shop.books
+  })
 
-  const getBooks = () => {
-    fetch('https://striveschool-api.herokuapp.com/food-books')
-      .then((res) => {
-        if (res.ok) {
-          return res.json()
-        } else {
-          throw new Error('errore nel recupero libri')
-        }
-      })
-      .then((data) => {
-        setBooks(data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    getBooks()
+    // per recuperare i libri dispatchiamo l'action creator "speciale" getBooksAction()
+    dispatch(getBooksAction())
   }, [])
 
   const changeBook = (book) => setBookSelected(book)
@@ -36,7 +28,7 @@ const BookStore = () => {
         <BookList
           bookSelected={bookSelected}
           changeBook={changeBook}
-          books={books}
+          books={books} // ora arrivano da Redux!
         />
       </Col>
       <Col lg={8}>

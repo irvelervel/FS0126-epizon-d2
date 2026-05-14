@@ -8,28 +8,33 @@ import Cart from './components/Cart'
 import Footer from './components/Footer'
 import { Provider } from 'react-redux'
 import store from './redux/store'
+import { useSelector } from 'react-redux'
 
 const App = () => {
+  const fetchError = useSelector((reduxStore) => {
+    return reduxStore.shop.isError
+  })
+
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Container className="epizon-container">
-          <Row>
-            <Col className="text-center background-div">
-              <Link to="/">
-                <h1>Epizon Book Store</h1>
-              </Link>
-            </Col>
-            <CartIndicator />
-          </Row>
-          <Routes>
-            <Route path="/" element={<BookStore />} />
-            <Route path="/cart" element={<Cart />} />
-          </Routes>
-          <Footer />
-        </Container>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <Container className="epizon-container">
+        <Row>
+          <Col className="text-center background-div">
+            <Link to="/">
+              <h1 className={fetchError ? 'text-danger' : ''}>
+                Epizon Book Store
+              </h1>
+            </Link>
+          </Col>
+          <CartIndicator />
+        </Row>
+        <Routes>
+          <Route path="/" element={<BookStore />} />
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
+        <Footer />
+      </Container>
+    </BrowserRouter>
   )
 }
 

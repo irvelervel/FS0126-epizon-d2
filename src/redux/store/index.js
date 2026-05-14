@@ -4,12 +4,14 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import cartReducer from '../reducers/cartReducer'
 import userReducer from '../reducers/userReducer'
+import shopReducer from '../reducers/shopReducer'
 // combineReducers è una funzione che accetta tanti reducers (che gestiscono le "fette")
 // e ve ne ritorna uno unico (la "torta")
 
 const mainReducer = combineReducers({
   cart: cartReducer,
   user: userReducer,
+  shop: shopReducer,
 })
 
 const store = configureStore({

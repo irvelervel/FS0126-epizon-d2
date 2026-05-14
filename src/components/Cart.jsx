@@ -11,6 +11,10 @@ const Cart = () => {
     return tuttoLoStato.cart.content
   })
 
+  const libriDisponibili = useSelector((reduxStore) => {
+    return reduxStore.shop.books.length
+  })
+
   const dispatch = useDispatch()
 
   return (
@@ -49,7 +53,10 @@ const Cart = () => {
             )}
             $
           </p>
-          <p>Al momento nel nostro negozio risultano disponibili X libri.</p>
+          <p>
+            Al momento nel nostro negozio risultano disponibili{' '}
+            {libriDisponibili} libri.
+          </p>
         </Col>
       </Row>
     </Row>
