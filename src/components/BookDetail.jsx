@@ -1,10 +1,13 @@
 import { Col, Row, Button } from 'react-bootstrap'
 import { FaShoppingCart } from 'react-icons/fa'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addToCartAction } from '../redux/actions'
 
 const BookDetail = ({ bookSelected }) => {
   const dispatch = useDispatch()
+  const username = useSelector((reduxStore) => {
+    return reduxStore.user.name // nome utente, inizialmente è stringa vuota!
+  })
 
   return (
     <div className="mt-3 mb-4 mb-lg-0">
@@ -34,17 +37,28 @@ const BookDetail = ({ bookSelected }) => {
                 <span className="fw-bold">Price:</span>&nbsp;
                 {bookSelected.price}$
               </p>
-              <Button
-                className="d-flex align-items-center"
-                onClick={() => {
-                  dispatch(addToCartAction(bookSelected))
-                  // dispatcho sempre un oggetto action, questa volta però invocando una funzione
-                  // un cosiddetto "action creator" che ritorna l'azione con type "ADD_TO_CART"
-                }}
-              >
-                <span className="me-2">AGGIUNGI AL</span>
-                <FaShoppingCart />
-              </Button>
+              {/* questo pulsante di aggiunta al carrello ora lo voglio montare DINAMICAMENTE */}
+              {/* voglio infatti farlo comparire SOLO se l'utente è loggato (solo se state.user.name non è vuoto) */}
+              {/* se state.user.name è stringa vuota, invece del bottone mostriamo un messaggio */}
+
+              {/* verifico che username sia un valore truthy, cioè che abbia length > 0 */}
+              {username ? (
+                <Button
+                  className="d-flex align-items-center"
+                  onClick={() => {
+                    dispatch(addToCartAction(bookSelected))
+                    // dispatcho sempre un oggetto action, questa volta però invocando una funzione
+                    // un cosiddetto "action creator" che ritorna l'azione con type "ADD_TO_CART"
+                  }}
+                >
+                  <span className="me-2">AGGIUNGI AL</span>
+                  <FaShoppingCart />
+                </Button>
+              ) : (
+                <p className="fst-italic">
+                  Per aggiungere questo libro al carrello, effettua il login!
+                </p>
+              )}
             </Col>
           </Row>
         </>

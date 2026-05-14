@@ -3,7 +3,7 @@
 // il suo scopo è creare e mantenere lo stato di Redux
 // il reducer verrà azionato AUTOMATICAMENTE da REDUX ogni volta che si effettua il dispatch di una action
 
-import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions'
+import { ADD_TO_CART, REMOVE_FROM_CART, SET_USERNAME } from '../actions'
 
 // ogni reducer è una funzione PURA, ciò significa tra le altre cose che:
 // - NON MUTA i propri parametri
@@ -16,6 +16,9 @@ const initialState = {
   cart: {
     // qui dentro salviamo tutte le informazioni relative al concetto "carrello" nell'app
     content: [], // intanto facciamo il vero e proprio array che conterrà i libri
+  },
+  user: {
+    name: '', // inizialmente, l'utente non è loggato
   },
 }
 
@@ -32,7 +35,7 @@ const mainReducer = (state = initialState, action) => {
         // tutti questi ... servono per ricreare la struttura dell'oggetto precedente!
         // anche se voglio solamente aggiungere un elemento a content, non posso rischiare di
         // perdere altri contenuti dello store!
-        ...state,
+        ...state, // serve a preservare altre fette del vostro redux store
         cart: {
           ...state.cart,
           content: [...state.cart.content, action.payload], // dobbiamo aggiungere un libro! è trasmesso in "action.payload"
@@ -47,7 +50,7 @@ const mainReducer = (state = initialState, action) => {
     case REMOVE_FROM_CART:
       // ...e anche qui ritorneremo il nuovo stato di Redux
       return {
-        ...state,
+        ...state, // serve a preservare altre fette del vostro redux store
         cart: {
           ...state.cart,
           // content: state.cart.content.filter((libro) => {
@@ -64,6 +67,16 @@ const mainReducer = (state = initialState, action) => {
             (libro) => libro.id !== action.payload,
           ),
           // devo creare un nuovo content in cui c'è un elemento di meno rispetto al content attuale
+        },
+      }
+
+    case SET_USERNAME:
+      return {
+        // anche qui, ritorno il nuovo stato di Redux per l'intero applicativo
+        ...state,
+        user: {
+          ...state.user,
+          name: action.payload,
         },
       }
 
